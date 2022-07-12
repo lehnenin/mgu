@@ -1,0 +1,68 @@
+#include <stdio.h>
+void gf2diag(float* A, float* b,float* x,int size){
+    *(x+size-1) = *(b+size-1);  
+    for(int i = size-2; i >= 0; i--)
+    {
+        *(x+i) = *(b+i) - *(A+i*size+i+1) * *(x+i+1) ;
+    }
+    
+}
+void main()
+{
+    /* Дана система линейных алгебраических уравнений (СЛАУ) */
+    /*с верхней (правой) двухдиагональной матрицей, в которой диагональные элементы равны 1*/
+    int size,i,j;
+    printf("размерность матрицы = ");
+    scanf("%d",&size);
+    float A[size][size];    
+    float b[size];
+    printf("Ввод Матрицы А = ");
+    printf("\n");
+    for(i = 0 ; i < size; i++){
+        for(j = 0 ; j < size; j++){
+            scanf("%f",&A[i][j]);
+        }
+    }
+    printf("\nВвод b = ");
+    for(i = 0 ; i < size ; i++){
+        scanf("%f",&b[i]);
+    }
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            if (i == j && A[i][j] == 0)
+            {
+                printf("определитьель матрицы равен 0 (нет единственного решения)\n");
+                return 1;
+            }
+            if(i > j && A[i][j] != 0)
+            {
+                printf("неправильный ввод матрицы \n");
+                return 1;
+            }
+            if(j > i+1 && A[i][j] != 0)
+            {
+                printf("неправильный ввод матрицы \n");
+                return 1;
+            }
+        }
+    }
+    float x[size];
+    gf2diag(A,b,x,size);
+    printf("Слау = \n");
+     for(int i = 0; i < size; i++)
+    {
+        for(int j = 0; j < size; j++)
+        {
+            printf("%f\t",A[i][j]);
+        }
+        
+        printf("|\t %f\n",b[i]);
+    }
+    printf("Решение = \n");
+    for(int i = 0; i < size; i++)
+    {
+        printf("x[%d] = %f\n",i+1,x[i]);
+    }
+}
